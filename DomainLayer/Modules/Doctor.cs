@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DomainLayer.Modules
+namespace Core.DomainLayer.Entities;
+
+public class Doctor : BaseEntity<int>
 {
-    public class Doctor : BaseEntity<int>
-    {
-        public string Name { get; set; } = default!;
-        public string Bio { get; set; } = default!;
-        public string Specialization { get; set; } = default!;
-        public decimal Price { get; set; }
-        public ICollection<Appointment> Appointments { get; set; } = [];
-    }
+    [Required]
+    public string AppUserId { get; set; } = null!;
+
+    public AppUser AppUser { get; set; } = null!;
+
+    [Required, MaxLength(100)]
+    public string Specialty { get; set; } = null!;
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal ConsultationFee { get; set; }
+
+    public int ClinicId { get; set; }
+    public Clinic Clinic { get; set; } = null!;
+
+    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public ICollection<WorkingHour> WorkingHours { get; set; } = new List<WorkingHour>();
 }

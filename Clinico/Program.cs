@@ -1,3 +1,7 @@
+﻿using Clinico.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+using Persistence.Data;
 
 namespace Clinico
 {
@@ -7,24 +11,32 @@ namespace Clinico
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // Add services
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddInfrastructerServices(builder.Configuration);
+            builder.Services.AddJWTService(builder.Configuration);
+
+            // Swagger / OpenAPI
+            // ✅ Swagger (Swashbuckle)
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Clinico API v1");
+                    // اختياري: c.RoutePrefix = "swagger"; // ده الديفولت
+                });
             }
 
             app.UseHttpsRedirection();
-
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
