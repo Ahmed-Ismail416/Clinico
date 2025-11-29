@@ -1,9 +1,11 @@
 ﻿using Core.DomainLayer.Entities;
+using DomainLayer.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
+using Persistence.SeedData;
 using ServiceAbstraction;
 using Services;
 
@@ -23,6 +25,7 @@ namespace Persistence
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IAuthService, AuthSerivce>();
+            services.AddScoped<ISeed, Seed>();
             return services;
         }
 
