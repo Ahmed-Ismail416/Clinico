@@ -11,6 +11,7 @@ namespace Services.Specification
 {
     public class BaseSpecification<TEntity , Tkey> : ISpecification<TEntity, Tkey> where TEntity : BaseEntity<Tkey>
     {
+      
         public BaseSpecification(Expression<Func<TEntity,bool>>? _Criteria)
         {
             Criteria = _Criteria;
