@@ -1,13 +1,16 @@
 ﻿using Clinico.Extensions;
+using DomainLayer.Contracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
+using System.Threading.Tasks;
 
 namespace Clinico
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -16,12 +19,17 @@ namespace Clinico
             builder.Services.AddInfrastructerServices(builder.Configuration);
             builder.Services.AddJWTService(builder.Configuration);
 
-            // Swagger / OpenAPI
-            // ✅ Swagger (Swashbuckle)
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+
             var app = builder.Build();
+
+            // Seed Data
+            using var scope = app.Services.CreateScope();
+            var objOfDataSeeding = scope.ServiceProvider.GetRequiredService<ISeed>();
+            await objOfDataSeeding.SeedAsync();
 
             if (app.Environment.IsDevelopment())
             {
