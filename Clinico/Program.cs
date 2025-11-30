@@ -1,4 +1,5 @@
 ﻿using Clinico.Extensions;
+using Clinico.MiddleWares;
 using DomainLayer.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,17 @@ namespace Clinico
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services
+            #region Services
+
             builder.Services.AddControllers();
             builder.Services.AddInfrastructerServices(builder.Configuration);
             builder.Services.AddJWTService(builder.Configuration);
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddWebApiServices();
+
+            #endregion
 
 
 
@@ -31,6 +36,7 @@ namespace Clinico
             var objOfDataSeeding = scope.ServiceProvider.GetRequiredService<ISeed>();
             await objOfDataSeeding.SeedAsync();
 
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -52,3 +58,7 @@ namespace Clinico
         }
     }
 }
+
+
+
+
