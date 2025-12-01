@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public  class UnAutherizedExcepion(string? message = "You are not authorized to access this resource.") : Exception(message)
+    public class DoctorNotFoundException(int id) : NotFoundException($"user With this Id: {id} is not Exist")
     {
-
     }
 }

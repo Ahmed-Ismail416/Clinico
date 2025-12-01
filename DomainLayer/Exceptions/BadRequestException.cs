@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public sealed class BadRequestException(List<string> errors) : Exception("Validation Failed")
+    public sealed class BadRequestException(IEnumerable<string> errors, string message = "Validation Failed") : Exception(message)
     {
-        public List<string> Errors { get; set; } = errors;
+        public IEnumerable<string> Errors { get; set; } = errors;
     }
 }

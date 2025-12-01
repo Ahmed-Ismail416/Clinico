@@ -52,7 +52,8 @@ namespace Clinico.MiddleWares
 
         private int GetBadRequestErrors(BadRequestException badRequestException, ErrorToReturn response)
         {
-            response.Errors = badRequestException.Errors;
+            response.Errors = badRequestException.Errors.ToList();
+            response.Message  = badRequestException.Message;
             return StatusCodes.Status400BadRequest;
         }
         
