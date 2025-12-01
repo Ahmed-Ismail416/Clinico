@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
 using Persistence.SeedData;
+using Persistence.UnitOfWorkPatter;
 using ServiceAbstraction;
 using Services;
 
@@ -26,6 +27,8 @@ namespace Persistence
 
             services.AddScoped<IAuthService, AuthSerivce>();
             services.AddScoped<ISeed, Seed>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
 
