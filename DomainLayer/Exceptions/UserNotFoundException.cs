@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public  class UnAutherizedExcepion(string? message = "You are not authorized to access this resource.") : Exception(message)
+    public sealed class UserNotFoundException(string? message) : NotFoundException(message)
     {
-
     }
 }

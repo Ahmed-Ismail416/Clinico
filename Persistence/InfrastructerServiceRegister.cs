@@ -25,7 +25,6 @@ namespace Persistence
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IAuthService, AuthSerivce>();
             services.AddScoped<ISeed, Seed>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

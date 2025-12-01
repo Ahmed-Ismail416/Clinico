@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
+using Services;
 using System.Threading.Tasks;
 
 namespace Clinico
@@ -24,6 +25,7 @@ namespace Clinico
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddWebApiServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
 
             #endregion
 
@@ -48,6 +50,7 @@ namespace Clinico
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

@@ -20,7 +20,7 @@ namespace Persistence.Repositories
 
 
         public void Delete(TEntity entity)
-        => _context.Set<TEntity>().Add(entity);
+        => _context.Set<TEntity>().Remove(entity);
 
         public async Task<TEntity?> GetByIdAsync(Tkey id)
         => await _context.Set<TEntity>().FindAsync(id);
