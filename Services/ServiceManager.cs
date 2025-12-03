@@ -1,6 +1,7 @@
 ﻿using Core.DomainLayer.Entities;
 using DomainLayer.Contracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using ServiceAbstraction;
 using System;
@@ -24,8 +25,9 @@ namespace Services
         public IClinicService ClinicService => _lazyClinicService.Value;
 
         public Lazy<IDoctorService> _lazyDoctorService = new Lazy<IDoctorService>(() => new DoctorService(_unitOfWork, _userManager));
-    
         public IDoctorService DoctorService => _lazyDoctorService.Value;
 
+        public Lazy<IAppointmentService> _lazyAppointmentService = new Lazy<IAppointmentService>(() => new AppointmentService(_unitOfWork));
+        public IAppointmentService AppointmentService => _lazyAppointmentService.Value;
     }
 }

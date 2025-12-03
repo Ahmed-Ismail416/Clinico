@@ -42,6 +42,7 @@ namespace Clinico.MiddleWares
                 NotFoundException => StatusCodes.Status404NotFound,
                 UnAutherizedExcepion => StatusCodes.Status401Unauthorized,
                 BadRequestException badRequestException => GetBadRequestErrors( badRequestException,  response),
+                AppointmentConflictException  => StatusCodes.Status409Conflict,
                 _ => StatusCodes.Status500InternalServerError
 
             };

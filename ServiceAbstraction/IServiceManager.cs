@@ -12,5 +12,6 @@ namespace DomainLayer.Contracts
         IAuthService AuthService { get; }
         IClinicService ClinicService { get; }
         IDoctorService DoctorService { get; }
-        }
+        IAppointmentService AppointmentService { get; }
+    }
 }
