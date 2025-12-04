@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Shared.Dtos;
 using Shared.Dtos.DoctorDto;
 using Shared.Dtos.DoctorsDto;
 using System;
@@ -18,9 +19,9 @@ namespace Presentation.Controller
     public class DoctorController(IServiceManager _serviceManger) : ApiBaseController
     {
         [HttpGet]
-        public async Task<IReadOnlyList<DoctorResponseDto>> GetDoctors()
+        public async Task<PaginationResult<DoctorResponseDto>> GetDoctors([FromQuery] DoctorParams dp )
         {
-            var doctors = await _serviceManger.DoctorService.GetAllDoctorsAsync();
+            var doctors = await _serviceManger.DoctorService.GetAllDoctorsAsync(dp);
             return doctors;
         }
 

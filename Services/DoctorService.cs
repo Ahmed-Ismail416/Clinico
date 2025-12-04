@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ServiceAbstraction;
 using Services.Specification;
+using Shared.Dtos;
 using Shared.Dtos.DoctorDto;
 using Shared.Dtos.DoctorsDto;
 using System;
@@ -80,13 +81,16 @@ namespace Services
         #endregion
 
         #region Read
-        public async Task<IReadOnlyList<DoctorResponseDto>> GetAllDoctorsAsync()
+        public async Task<PaginationResult<DoctorResponseDto>> GetAllDoctorsAsync(DoctorParams dp) 
         {
-            var Spec = new DoctorWithClinicAndUserSpecification();
+            var Spec = new DoctorWithClinicAndUserSpecification(dp);
             var doctors = await _unitOfWork.GetRepo<Doctor, int>().ListAsyncWithSpec(Spec);
+            var specCount = new DoctorCountSpecification(dp);
+            var doctorCount = await _unitOfWork.GetRepo<Doctor, int>().CountAsync(specCount);
             var doctorDtos = doctors.Adapt<IReadOnlyList<DoctorResponseDto>>();
 
-            return doctorDtos;
+            var result  =   new PaginationResult<DoctorResponseDto>(dp.PageIndex, dp.PageSize, doctorCount, doctorDtos);
+            return result;
         }
 
         public async Task<DoctorResponseDto?> GetDoctorByIdAsync(int id)

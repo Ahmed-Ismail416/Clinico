@@ -9,7 +9,7 @@ public class AppUser : IdentityUser
     public string FullName { get; set; } = null!;
 
     public string? ProfilePictureUrl { get; set; }
-
+ 
     // Navigation
     public ICollection<Appointment> AppointmentsAsPatient { get; set; } = new List<Appointment>();
     public Doctor? DoctorProfile { get; set; }
