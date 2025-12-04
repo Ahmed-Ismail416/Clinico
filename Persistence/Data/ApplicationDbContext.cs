@@ -31,7 +31,14 @@ namespace Persistence.Data
 
         }
         
+        public DbSet<Clinic> Clinics { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Appointment> Appointments
+        {
+            get; set;
+        }
+        public DbSet<WorkingHour> WorkingHours { get; set; }
+        public DbSet<AppUser> Patients { get; set; }
 
-        
-    }
+        }
 }

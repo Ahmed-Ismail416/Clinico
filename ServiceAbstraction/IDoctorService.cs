@@ -1,4 +1,6 @@
-﻿using Shared.Dtos.DoctorDto;
+﻿using Core.DomainLayer.Entities;
+using Shared.Dtos;
+using Shared.Dtos.DoctorDto;
 using Shared.Dtos.DoctorsDto;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace ServiceAbstraction
 {
     public interface IDoctorService
     {
-        Task<IReadOnlyList<DoctorResponseDto>> GetAllDoctorsAsync();
+        Task<PaginationResult<DoctorResponseDto>> GetAllDoctorsAsync(DoctorParams dp);
         Task<DoctorResponseDto?> GetDoctorByIdAsync(int id);
         Task<DoctorResponseDto> CreateDoctorAsync(RegisterDoctorDto doctorCreateDto);
         Task<DoctorResponseDto> UpdateDoctorAsync(int id, UpdateDoctorDto doctorUpdateDto);

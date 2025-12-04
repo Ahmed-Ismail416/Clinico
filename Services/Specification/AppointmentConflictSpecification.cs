@@ -22,5 +22,18 @@ namespace Services.Specification
 
             
         }
+        public AppointmentConflictSpecification( int doctorId, DateTime newStart, DateTime newEnd, int? exludeAppointmentId)
+        : base
+            (
+             a =>
+             a.DoctorId == doctorId &&
+             a.Status != AppointmentStatus.Cancelled &&
+             (newStart < a.EndTime && newEnd > a.StartTime)&&
+             (!exludeAppointmentId.HasValue || a.Id != exludeAppointmentId.Value)
+
+             )
+        {
+            
+        }
     }
 }

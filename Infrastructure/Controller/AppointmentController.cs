@@ -1,6 +1,7 @@
 ﻿using DomainLayer.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos;
 using Shared.Dtos.AppointmentDto;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,10 @@ namespace Presentation.Controller
             return CreatedAtAction(nameof(GetAppointment), new { id = appointment.Id }, appointment);
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<AppointmentResponseDto>>> GetAllAppointments()
+        public async Task<ActionResult<PaginationResult<AppointmentResponseDto>>> GetAllAppointments([FromQuery] AppointmentParams ap)
         {
             // هنا ممكن مستقبلاً نعمل فلترة (المريض يشوف مواعيده بس، والدكتور يشوف مواعيده بس)
-            var result = await _serviceManager.AppointmentService.GetAllApointmentAsync();
+            var result = await _serviceManager.AppointmentService.GetAllApointmentAsync(ap);
             return Ok(result);
         }
         [HttpGet("{id}")]
@@ -45,5 +46,27 @@ namespace Presentation.Controller
             return Ok(result);
         }
 
+        [HttpGet("myappointments")]
+        [Authorize(Roles = "Patient,Doctor,Admin")]
+        public async Task<ActionResult<IReadOnlyList<AppointmentResponseDto>>> GetMyAppointments()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+                return Unauthorized();
+
+            var result = await _serviceManager.AppointmentService.GetMyAppointmentAsync(userId, role);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Patient,Doctor,Admin")]
+        public async Task<ActionResult<AppointmentResponseDto>> UpdateAppointment(int id, [FromBody] UpdateAppointmentDto dto)
+        {
+            var result = await _serviceManager.AppointmentService.UpdateAppointmentAsync(id, dto);
+            return Ok(result);
+        }
     }
 }

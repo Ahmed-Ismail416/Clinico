@@ -28,12 +28,22 @@ namespace Services.Mapping
 
             // Read Mapping
             config.NewConfig<Doctor, DoctorResponseDto>()
-                .Map(dest => dest.FullName, src => src.AppUser.FullName)
-                .Map(dest => dest.Email, src => src.AppUser.Email)
-                .Map(dest => dest.PhoneNumber, src => src.AppUser.PhoneNumber)
-                .Map(dest => dest.ProfilePictureUrl, src => $"{BaseUrl}{src.AppUser.ProfilePictureUrl.Replace("\\", "/")}")
+                .Map(dest => dest.FullName,
+                    src => src.AppUser != null ? src.AppUser.FullName : null)
 
-                .Map(dest => dest.ClinicName, src => src.Clinic.Name);
+                .Map(dest => dest.Email,
+                    src => src.AppUser != null ? src.AppUser.Email : null)
+
+                .Map(dest => dest.PhoneNumber,
+                    src => src.AppUser != null ? src.AppUser.PhoneNumber : null)
+
+                .Map(dest => dest.ProfilePictureUrl,
+                    src => src.AppUser != null && src.AppUser.ProfilePictureUrl != null
+                         ? $"{BaseUrl}{src.AppUser.ProfilePictureUrl.Replace("\\", "/")}"
+                         : null)
+
+                .Map(dest => dest.ClinicName,
+                    src => src.Clinic != null ? src.Clinic.Name : null);
 
             config.NewConfig<UpdateDoctorDto, Doctor>()
                 .Map(dest => dest.AppUser.FullName, src => src.FullName)
